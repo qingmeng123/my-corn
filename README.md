@@ -30,7 +30,7 @@ func main() {
    scheduler.On()
    time.Sleep(2*time.Second)
    //scheduler.Clear()
-   scheduler.Remove("task")
+   scheduler.Remove("main.task")
    time.Sleep(5*time.Second)
 }
 ```
