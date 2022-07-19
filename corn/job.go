@@ -23,7 +23,6 @@ const (
 	minutes
 	hours
 	days
-	weeks
 )
 
 var (
@@ -36,21 +35,21 @@ var (
 
 // Job 他job的封装好喜欢，借鉴借鉴源码吧
 type Job struct {
-	interval uint64	//运行之间的暂停间隔单位
-	jobFunc string	//需要执行的类名
-	uint timeUnit	//时间单位
-	atTime time.Duration	//时间间隔
-	lastRun time.Time 	//上次执行的时间
-	nextRun time.Time	//下次执行的时间
-	err      error                    // 和job有关的error
-	funcs    map[string]interface{}   // 函数任务存储的映射
-	params 	interface{} // 方法参数
+	interval uint64                 //运行之间的暂停间隔单位
+	jobFunc  string                 //需要执行的类名
+	uint     timeUnit               //时间单位
+	atTime   time.Duration          //时间间隔
+	lastRun  time.Time              //上次执行的时间
+	nextRun  time.Time              //下次执行的时间
+	err      error                  // 和job有关的error
+	funcs    map[string]interface{} // 函数任务存储的映射
+	params   interface{}            // 方法参数
 }
 
 func NewJob(interval uint64) *Job {
 	return &Job{
 		interval: interval,
-		uint: seconds,	//默认为秒
+		uint:     seconds, //默认为秒
 		lastRun:  time.Unix(0, 0),
 		nextRun:  time.Unix(0, 0),
 		funcs:    make(map[string]interface{}),
@@ -59,8 +58,32 @@ func NewJob(interval uint64) *Job {
 
 // Second 将单位设置为秒,并计算出atTime
 func (j *Job) Second() *Job {
-	j.uint=seconds
-	j.atTime= time.Duration(int(j.uint) * int(j.interval))*time.Second
+	j.uint = seconds
+	j.atTime = time.Duration(int(j.uint)*int(j.interval)) * time.Second
+
+	return j
+}
+
+// Second 将单位设置为秒,并计算出atTime
+func (j *Job) Minutes() *Job {
+	j.uint = minutes
+	j.atTime = time.Duration(int(j.uint)*int(j.interval)) * time.Minute
+
+	return j
+}
+
+// Second 将单位设置为秒,并计算出atTime
+func (j *Job) Hours() *Job {
+	j.uint = hours
+	j.atTime = time.Duration(int(j.uint)*int(j.interval)) * time.Hour
+
+	return j
+}
+
+// Second 将单位设置为秒,并计算出atTime
+func (j *Job) Days() *Job {
+	j.uint = days
+	j.atTime = time.Duration(int(j.uint)*int(j.interval)) * time.Hour * 24
 
 	return j
 }
@@ -100,8 +123,8 @@ func (j *Job) Do(jobFun interface{}, params ...interface{}) error {
 	j.params = params
 	j.jobFunc = fname
 
-	j.lastRun=time.Now()
-	j.nextRun=time.Now().Add(j.atTime)
+	j.lastRun = time.Now()
+	j.nextRun = time.Now().Add(j.atTime)
 	return nil
 }
 
@@ -109,7 +132,6 @@ func (j *Job) Do(jobFun interface{}, params ...interface{}) error {
 func getFunctionName(fn interface{}) string {
 	return runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name()
 }
-
 
 //标准化时间
 func formatTime(t string) (hour, min, sec int, err error) {
@@ -136,4 +158,3 @@ func formatTime(t string) (hour, min, sec int, err error) {
 
 	return hour, min, sec, nil
 }
-
