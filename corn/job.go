@@ -64,7 +64,7 @@ func (j *Job) Second() *Job {
 	return j
 }
 
-// Second 将单位设置为秒,并计算出atTime
+// Minutes 将单位设置为分,并计算出atTime
 func (j *Job) Minutes() *Job {
 	j.uint = minutes
 	j.atTime = time.Duration(int(j.uint)*int(j.interval)) * time.Minute
@@ -72,7 +72,7 @@ func (j *Job) Minutes() *Job {
 	return j
 }
 
-// Second 将单位设置为秒,并计算出atTime
+// Hours  将单位设置为时,并计算出atTime
 func (j *Job) Hours() *Job {
 	j.uint = hours
 	j.atTime = time.Duration(int(j.uint)*int(j.interval)) * time.Hour
@@ -80,7 +80,7 @@ func (j *Job) Hours() *Job {
 	return j
 }
 
-// Second 将单位设置为秒,并计算出atTime
+// Days  将单位设置为天,并计算出atTime
 func (j *Job) Days() *Job {
 	j.uint = days
 	j.atTime = time.Duration(int(j.uint)*int(j.interval)) * time.Hour * 24
