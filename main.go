@@ -25,6 +25,7 @@ func main() {
 	scheduler := corn.NewScheduler()
 	scheduler.Every(2).Second().Do(task1)
 	scheduler.Every(3).Second().Do(task2, 1, "first")
+	scheduler.Every(3).Days().Do(task2, 1, "first")
 	go scheduler.Start()
 
 	time.Sleep(5 * time.Second)
