@@ -13,24 +13,29 @@ import (
 	"time"
 )
 
-
-func task() {
+func task1() {
 	fmt.Println("hello")
 }
 
+func task2(a int, b string) {
+	fmt.Println(a, b)
+}
 
 func main() {
-	scheduler:=corn.NewScheduler()
-	scheduler.Every(2).Second().Do(task)
+	scheduler := corn.NewScheduler()
+	scheduler.Every(2).Second().Do(task1)
+	scheduler.Every(3).Second().Do(task2, 1, "first")
 	go scheduler.Start()
-	time.Sleep(5*time.Second)
+
+	time.Sleep(5 * time.Second)
 	scheduler.Pause()
 	fmt.Println("暂停5s")
-	time.Sleep(5*time.Second)
+	time.Sleep(5 * time.Second)
 	fmt.Println("继续工作")
 	scheduler.On()
-	time.Sleep(2*time.Second)
+	time.Sleep(2 * time.Second)
 	//scheduler.Clear()
-	scheduler.Remove("main.task")
-	time.Sleep(5*time.Second)
+	scheduler.Remove(task2)
+	time.Sleep(5 * time.Second)
+
 }

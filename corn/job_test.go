@@ -13,7 +13,7 @@ import (
 )
 
 func TestJob_Do(t *testing.T) {
-	scheduler:=NewScheduler()
-	scheduler.Every(2).Second().Do()
-	fmt.Println("job",scheduler.node.pNext.pNext.job)
+	scheduler := NewScheduler()
+	scheduler.Every(2).Second().Do(func() { fmt.Println("hello") })
+	fmt.Println("job", scheduler.node.pNext.pNext.job)
 }
